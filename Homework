@@ -1,0 +1,54 @@
+import argparse
+import xlsxwriter
+
+def get_argum():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', '--file', required=True, help = 'File .txt')
+    parser.add_argument('-x', '--xlsx', default="Tablica1", help = 'File .exel')
+    args = parser.parse_args()
+    return arg.file, arg.xlsx
+
+
+def get_cont(data_file):
+    with open(data_file) as f:
+        lst = []
+        for el in f:
+            lst.append(el.split())
+        sorted_list = sorted(lst, reverse=True, key=lambda x : x[2])
+        for x in sorted_list:
+            x[2] = int(x[2])
+        return sorted_list
+
+
+def cre_book(wbname):
+    book = xlsxwriter.Workbook(wbname)
+    sheet = workbook.add_worksheet()
+    sheet.set_column(0, 3, 10)
+    format1 = book.add_format(({'bold': True, 'bg_color': '#FFFF00'}))
+
+    sheet.write('A1', 'Name', format1)
+    sheet.write('B1', 'Surname', format1)
+    sheet.write('C1', 'Age', format1)
+    sheet.write('D1', 'Profession', format1)
+    return book, sheet
+
+def fill_data(book, sheet, cont):
+    format2 = workbook.add_format(({'bold': False, 'bg_color': '#008000'}))
+    for i, (name, surname, age, profession) in enumerate(cont, start=2):
+        worksheet.conditional_format(f'C{i}', {'type': 'cell', 'criteria': '<', 'value': 25, 'format': format2})
+        worksheet.write(f'A{i}', name)
+        worksheet.write(f'B{i}', surname)
+        worksheet.write(f'C{i}', age, )
+        worksheet.write(f'D{i}', profession)
+    workbook.close()
+
+
+
+
+def main():
+    filename, xlsxname = get_argum()
+    mylst = get_cont(filename)
+    work_b, work_sh = ccre_book(xlsxname)
+    fill_data(work_b, work_sh, mylst)
+
+main()
